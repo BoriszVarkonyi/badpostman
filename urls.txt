@@ -1,0 +1,3 @@
+https://api.dartagnan.cc/api/tournaments/
+https://api.dartagnan.cc/api/competitions/
+https://api.dartagnan.cc/api/weaponcontrols/
