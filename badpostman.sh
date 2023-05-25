@@ -16,7 +16,9 @@ echo "3: Add endpoint"
 read func_num
 token_query()
 {
-	curl -X POST https://api.dartagnan.cc/api/token/ -H "Content-Type: application/json" -d '{"username":"root","password":"d4RTagnan"}' -o token.txt
+	END_URL=$(head -n 1 ~/script/end_link.txt)
+	END_VALID=$(head -n 1 ~/script/end_valid.txt)
+	curl -X POST $END_URL -H "Content-Type: application/json" -d $END_VALID -o ~/script/token.txt
 }
 
 if [[ $func_num == 1 ]]; then
@@ -38,16 +40,10 @@ if [[ $func_num == 1 ]]; then
 				((counter=counter+1))
 			echo "$counter"
 			echo "$line"
-		done < urls.txt	
+		done < ~/script/urls.txt	
 	}
 
 	#-----------------------
-	
-	#Add calls
-	add_endpoints ()
-	{
-		
-	}
 
 	get()
 	{
@@ -64,14 +60,14 @@ if [[ $func_num == 1 ]]; then
 					echo "$counter"
 					echo "$URL_INPUT"
 				fi
-		done < urls.txt		
+		done < ~/script/urls.txt		
 		echo "$NEWLINE"
 		token_query
-		line=$(head -n 1 token.txt)
+		line=$(head -n 1 ~/script/token.txt)
 		access_token="${line:272:247}"
-		curl -X GET $NEWLINE -H "Content-Type: application/json" -H "Authorization: Bearer $access_token" -o get_response.json
+		curl -X GET $NEWLINE -H "Content-Type: application/json" -H "Authorization: Bearer $access_token" -o ~/script/get_response.json
 		clear
-		/home/linuxbrew/.linuxbrew/Cellar/jless/0.8.0/bin/jless get_response.json
+		/home/linuxbrew/.linuxbrew/Cellar/jless/0.8.0/bin/jless ~/script/get_response.json
 	}
 
 	#-----------------------
@@ -94,18 +90,17 @@ fi
 if [[ $func_num == 2 ]]; then
 	echo "Enter the API endpoint:"
 	read endpoint_link
+	echo $endpoint_link > ~/script/end_link.txt
 	echo "Enter validation information"
 	read endpoint_valid
+	echo $endpoint_valid >  ~/script/end_valid.txt
+
 fi
 
 
 if [[ $func_num == 3 ]]; then
 	echo "Add endpoint URL"
 	read URL
-	echo "$URL" >> urls.txt
+	echo "$URL" >> ~/script/urls.txt
 fi
 
-echo "$endpoint_link" > endpoint_link.txt
-echo "$endpoint_valid" > endpoint_valid.txt
-
-echo "$endpoint_link"
